@@ -1,0 +1,8 @@
+#Directories
+.vs/
+
+#Files
+Snake.sln
+Snake/Snake.pyproj
+Snake/snakeplus.py
+Snake/GameOver.xcf
