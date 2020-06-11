@@ -137,15 +137,10 @@ while running:
         snake.dead = True
     elif snake.rect.top + snake.height > SCREEN_HEIGHT:
         snake.dead = True
-    """
+
     for rest_of_snake in snakes[1:]:
-        if pygame.sprite.spritecollide(snake, rest_of_snake):
+        if pygame.sprite.collide_rect(snake, rest_of_snake):
             snake.dead = True
-    """
-    if snake.dead:  # If snake is dead...
-        SCREEN.blit(GAME_OVER_IMAGE, [800, 600, 0, 0])
-        pygame.time.delay(1000)
-        running = False
 
     pygame.time.delay(int(100 - speed))  # Delays the snake 'cause otherwise, it would go waaay too fast
 
