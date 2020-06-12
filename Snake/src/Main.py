@@ -1,25 +1,28 @@
-import pygame
 import random
+import pygame
 
 from snake import Snake
 from food import Food
 from direction import Direction
 
+# Initialize pygame
+pygame.init()
+pygame.font.init()
+
 # Sets things up
-SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 960, 540
-SCREEN = pygame.display.set_mode(SCREEN_SIZE, pygame.RESIZABLE)
-BG_COLOUR = [0, 0, 0]
-SCREEN.fill(BG_COLOUR)
-ICON = pygame.image.load("assets/snake.ico")
+width, height = 960, 540
+SCREEN = pygame.display.set_mode((width, height))
+ICON = pygame.image.load("../assets/snake.ico")
 CAPTION = "Snake!"
 pygame.display.set_caption(CAPTION)
 pygame.display.set_icon(ICON)
-GAME_OVER_IMAGE = pygame.image.load("assets/GameOver.png")
+GAME_OVER_IMAGE = pygame.image.load("../assets/GameOver.png")
 
-speed = 5
+font = pygame.font.SysFont("Comic Sans MS", 24, 1)
+
 score = 0
-SNAKE_IMAGE = "assets/snake.png"  # 30 x 30
-FOOD_IMAGE = "assets/food.png"  # 30 x 30
+SNAKE_IMAGE = "../assets/snake.png"  # 30 x 30
+FOOD_IMAGE = "../assets/food.png"  # 30 x 30
 
 
 def pause():
@@ -37,8 +40,8 @@ def get_random_pos():
     """Gets random locations on the screen that are multiples of 30"""
 
     # Chooses random coordinates
-    x = random.randint(0, SCREEN_WIDTH - 30)
-    y = random.randint(0, SCREEN_HEIGHT - 30)
+    x = random.randint(0, width - 30)
+    y = random.randint(0, height - 30)
 
     # Makes it a multiple of 30
     x = x - (x % 30)
@@ -55,7 +58,7 @@ food = Food(SCREEN, FOOD_IMAGE, get_random_pos())
 running = True
 
 while running:
-    SCREEN.fill(BG_COLOUR)  # Clears the screen
+    SCREEN.fill([0, 0, 0])  # Clears the screen
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -65,12 +68,16 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN and snake.direction != Direction.UP:  # Move down
                 snake.direction = Direction.DOWN
+                break
             elif event.key == pygame.K_UP and snake.direction != Direction.DOWN:  # Move up
                 snake.direction = Direction.UP
+                break
             elif event.key == pygame.K_LEFT and snake.direction != Direction.RIGHT:  # Move left
                 snake.direction = Direction.LEFT
+                break
             elif event.key == pygame.K_RIGHT and snake.direction != Direction.LEFT:  # Move right
                 snake.direction = Direction.RIGHT
+                break
             elif event.key == pygame.K_p:
                 pause()
 
@@ -89,7 +96,6 @@ while running:
         part_number = len(snakes) + 1
         snakes.append(Snake(SCREEN, SNAKE_IMAGE, snake.locations[part_number]))
         score += 1  # Increments score
-        speed += 1  # Increments the snake's speed
 
     # Moves the individual snake parts
     for part in snakes:
@@ -98,15 +104,18 @@ while running:
 
     SCREEN.blit(food.image, food.rect)  # Shows food
 
+    score_display = font.render("Score: " + str(score), False, (255, 255, 255))
+    SCREEN.blit(score_display, (10, 10))
+
     # Checks if snake should die
     # If touching walls...
     if snake.rect.left < 0:
         snake.dead = True
-    elif snake.rect.right > SCREEN_WIDTH:
+    elif snake.rect.right > width:
         snake.dead = True
     elif snake.rect.top < 0:
         snake.dead = True
-    elif snake.rect.bottom > SCREEN_HEIGHT:
+    elif snake.rect.bottom > height:
         snake.dead = True
 
     for rest_of_snake in snakes[1:]:
@@ -114,9 +123,9 @@ while running:
             snake.dead = True
 
     if snake.dead:
-        break
+        running = False
 
-    pygame.time.delay(int(100 - speed))  # Pauses
+    pygame.time.delay(80)  # Pauses
 
     pygame.display.flip()
 

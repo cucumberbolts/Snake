@@ -1,7 +1,5 @@
 import pygame
 
-from direction import Direction
-
 class Food(pygame.sprite.Sprite):
     """food class"""
     def __init__(self, screen, image_file, location):

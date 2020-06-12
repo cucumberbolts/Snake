@@ -1,5 +1,6 @@
 #Directories
 .vs/
+.spyproject/
 Snake/src/__pycache__/
 
 #Files
@@ -7,4 +8,4 @@ Snake.sln
 Snake/Snake.pyproj
 Snake/Snake.pyproj.user
 Snake/snakeplus.py
-Snake/GameOver.xcf
+Snake/assets/GameOver.xcf
